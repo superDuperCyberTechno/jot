@@ -28,6 +28,7 @@ jot this is the thing I want to jot down!
 You have now saved "this is the thing I want to jot down!" as an entry for today!
 
 __Tags__
+
 _jot_ supports tags if you want to using the `-t` option:
 ```
 jot -t=tag1,tag2 this is the thing I want to jot down!
@@ -35,6 +36,7 @@ jot -t=tag1,tag2 this is the thing I want to jot down!
 This will file "this is the thing I want to jot down!" under both `tag1` and `tag2`. You can have any number of tags defined. Seperate them with a single comma.
 
 __Exporting__
+
 _jot_ keeps track of your entries using a JSON file. This is not very friendly to human eyes, so _jot_ can export your entries for you to read with the `-e` option:
 ```
 jot -e
