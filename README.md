@@ -29,7 +29,7 @@ You have now saved "this is the thing I want to jot down!" as an entry for today
 
 __Tags__
 
-_jot_ supports tags if you want to using the `-t` option:
+_jot_ supports tags, using the `-t` option:
 ```
 jot -t=tag1,tag2 this is the thing I want to jot down!
 ```
@@ -41,12 +41,13 @@ _jot_ keeps track of your entries using a JSON file. This is not very friendly t
 ```
 jot -e
 ```
-This will export all your entries into a simple TXT file (`~/jot.txt`) so you can peruse your life. 
+This will export all your entries into a simple TXT file (`~/jot.txt`) so you can peruse them. 
 
-Manage the contents your exports with the `-t` option:
+Filter the contents your exports using tags with the `-t` option:
 ```
 jot -e -t=work,leisure
 ```
+This will only export entries with the `work` or `leisure` tags.
 
 ### Technicalities
 _jot_ makes use of 3 files when operating:
