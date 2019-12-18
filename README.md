@@ -43,7 +43,7 @@ jot -e
 ```
 This will export all your entries into a simple TXT file (`~/jot.txt`) so you can peruse them. 
 
-Filter the contents your exports using tags with the `-t` option:
+Filter the contents of your exports using tags with the `-t` option:
 ```
 jot -e -t=work,leisure
 ```
