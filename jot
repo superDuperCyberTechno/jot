@@ -1,0 +1,186 @@
+#!/usr/bin/env python3
+
+#github.com/superDuperCyberTechno/jot
+#v1.1
+
+#shove all them modules up there!
+from os.path import expanduser
+from pathlib import Path
+import datetime
+import json
+import sys
+import os
+
+#an intersection function for our tags parsing, we'll use that later
+def intersect(a, b):
+     return list(set(a) & set(b))
+
+#now, where are we?
+home = expanduser("~")
+
+#define the config path
+config_folder_path = home + '/.config/jot/'
+config_file_path = config_folder_path + 'jot_config.json'
+
+#try to open the config
+try:
+    config_file = open(config_file_path)
+
+#if it's not found, let's create it and jam a simple json object in there
+except FileNotFoundError:
+    #if the jot config folder does not exist either, let's create it
+    if not os.path.exists(config_folder_path):
+        os.makedirs(config_folder_path)
+    #now, open the file (create it)
+    config_file = open(config_file_path, 'w')
+    #GET THAT JSON IN THERE!
+    config_file.write('{\n\n}')
+    #QUICK, CLOSE THE LID!
+    config_file.close()
+    #so, open the file
+    config_file = open(config_file_path)
+
+#alright, where were we? ah yes, load the config json object from the config file...
+config_json_data = json.load(config_file)
+#set config defaults so it works even if it's empty, we can't expect people to be know-it-alls!
+data_path = home
+auto_export = False
+#overwrite defaults with user defined
+for option in config_json_data:
+    if option == 'data_path':
+        #always remember to sanitize, kids!
+        data_path = '/' + config_json_data['data_path'].strip('/')
+    if option == 'auto_export':
+        #cast to boolean, because why not, right?
+        auto_export = bool(config_json_data['auto_export'])
+
+#so, now we know where the data is supposed to be saved, let's load it
+json_file_path = data_path + '/jot.json'
+#if it's not there, let's create an empty journal!
+try:
+    json_file = open(json_file_path)
+except FileNotFoundError:
+    #touch creates empty files!
+    Path(json_file_path).touch()
+    json_file = open(json_file_path)
+
+#let's load the json data
+try:
+    json_data = json.load(json_file)
+
+#and if we can't...
+except json.decoder.JSONDecodeError:
+    json_data = json.loads('{}')
+
+#create an empty string for the entry
+entry = ''
+#...and a list for potential tags provided by our user
+tags = []
+
+#options list
+# options = []
+
+#go through all the arguments, ignore the first argument (psst: it's the file name)
+for word in sys.argv[1:]:
+    word = word.strip()
+
+    #if the user has provided tags, we throw them into our tags list
+    if word.startswith('-t='):
+        tags_provided = [tag.strip() for tag in word[3:].split(',')]
+        for tag in tags_provided:
+            tags.append(tag)
+
+    #options parser
+    # elif word.startswith('-'):
+    #     options.append(word[1:])
+
+    #everything else is part of the actual entry
+    else:
+        #concatenate the arguments into a single string, separated by a single space!
+        entry += word + ' '
+
+#check out William Onyeabor's "When the Going is Smooth and Good", such a silly, happy romp
+
+#trim the new entry string for whitespace, that makes it all nice and tidy
+entry = entry.strip()
+
+#if the user hasn't requested an export, let's go ahead and write that entry!
+if(entry != '-e'):
+    # the date, - and timestamp will function as our keys in our dictionary
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    time = datetime.datetime.now().strftime("%H:%M:%S")
+
+    #lets get the data for today!
+    try:
+        day_data = json_data[today]
+
+    #if this day has not been noted yet, create it
+    except KeyError:
+        day_data = {}
+
+    #lets create the day data dictionary keys...
+    day_data[time] = {}
+    day_data[time]['metadata'] = {}
+
+    #and now, let's add the data
+    day_data[time]['entry'] = entry
+    day_data[time]['metadata']['tags'] = tags
+
+    #put it back where it came from (overwrite it)...
+    json_data[today] = day_data
+    json_encoded = json.dumps(json_data)
+
+    #close and truncate the current file
+    json_file.close()
+    json_file = open(json_file_path, 'w')
+    #then we write the data to the empty file
+    json_file.write(json_encoded)
+
+#so, we end up here if the user is exporting OR if the user has set the auto_export option to true! that way, we ALWAYS export so out user can read the jornal whenever they like
+if(entry == '-e' or auto_export):
+    #initialize a string for the human readable file, this is what our user likes to read
+    formatted = ''
+    #iterate on all the data in the json object
+    for date in json_data:
+        #flag for checking if we've added the date header to the exported file
+        date_added = False
+
+        #go through all the entries for today
+        for time in json_data[date]:
+            #if the user provided any tags to the exporter...
+            if bool(tags) and not auto_export:
+                #we get the entry tags...
+                entry_tags = json_data[date][time]['metadata']['tags']
+                #and check if they intersect with the provided tags!
+                do_export = bool(intersect(tags, entry_tags))
+
+            #if no tags were provided...
+            else:
+                #...then yes, always export!
+                do_export = True
+
+            #so, if we want to export this...
+            if do_export:
+                #btw, if no date header has been added, throw it in there!
+                if not date_added:
+                    formatted += date + '\n'
+                    #alright, now we added the date, no need to do that again
+                    date_added = True
+
+                #print the entry into the formatted string!
+                formatted += time + ' - ' + json_data[date][time]['entry'] + '\n'
+
+        #end for readability, add a newline before each new date header
+        formatted += '\n'
+
+    #for tidiness, remove the last newline, we don't need that!
+    formatted = formatted.strip()
+
+    if not formatted:
+        formatted = 'jot found nothing!'
+
+    #write the data and farewell
+    formatted_file = open(data_path + '/jot.txt' , 'w')
+    formatted_file.write(formatted)
+
+#that's it folks! keep it classy and stay frosty!
