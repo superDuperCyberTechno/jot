@@ -65,5 +65,5 @@ _jot_ makes use of 3 files when operating:
 
 `auto_export` forces _jot_ to export the entries every time an entry has been added:
 ```
-"data_path": true
+"auto_export": true
 ```
