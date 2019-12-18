@@ -51,6 +51,7 @@ This will only export entries with the `work` or `leisure` tags.
 
 ### Technicalities
 _jot_ makes use of 3 files when operating:
+
 `~/jot.json` is the data file and contains all your entries in JSON. This is the important file and you want to back it up.
 
 `~/jot.txt` is the parsed data from the file above. This file is non-essential and can be re-generated at will.
