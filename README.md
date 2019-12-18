@@ -58,7 +58,7 @@ _jot_ makes use of 3 files when operating:
 
 `~/.config/jot/jot_config.json` is where _jot_ stores all settings. These can be edited to your liking:
 
-`data_path` will let you define an __absolute__ path where you want _jot_ to save its data. The default is your home folder:
+`data_path` will let you define an __absolute__ path where you want _jot_ to save its data (`jot.json` and `jot.txt`). The default is your home folder:
 ```
 "data_path": "/insert/your/own/path/here"
 ```
