@@ -52,12 +52,16 @@ This will only export entries with the `work` or `leisure` tags.
 ### Technicalities
 _jot_ makes use of 3 files when operating:
 `~/jot.json` is the data file and contains all your entries in JSON. This is the important file and you want to back it up.
+
 `~/jot.txt` is the parsed data from the file above. This file is non-essential and can be re-generated at will.
+
 `~/.config/jot/jot_config.json` is where _jot_ stores all settings. These can be edited to your liking:
+
 `data_path` will let you define an __absolute__ path where you want _jot_ to save its data. The default is your home folder:
 ```
 "data_path": "/insert/your/own/path/here"
 ```
+
 `auto_export` forces _jot_ to export the entries every time an entry has been added:
 ```
 "data_path": true
