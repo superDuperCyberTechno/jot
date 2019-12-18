@@ -1,12 +1,12 @@
 # jot
-## a CLI for daily journaling
+### a CLI for daily journaling
 
 I stumbled upon [jrnl](https://github.com/maebert/jrnl) and thought it was a neat idea so I installed it and tried it. It didn't work very well so I quickly decided to slap something together myself. The result is _jot_.
 
 I've made it as simple as possible: A single executable in non-minified/compiled Python.
 
-###Installation
-In order to run 
+### Installation
+In order to run _jot_ you need `python3`.
 You can download the file and execute it as it is. To make it easy on yourself, you might wanna make it available in your PATH. This can be done like this:
 
 ```
