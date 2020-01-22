@@ -10,7 +10,7 @@ In order to run _jot_ you need `python3`.
 You can download the file and execute it as it is. To make it easy on yourself, you might wanna make it available in your PATH. This can be done like this:
 
 ```
-cd /usr/local/bin;sudo wget https://raw.githubusercontent.com/superDuperCyberTechno/jot/master/jot && chmod +x jot;cd -;
+cd /usr/local/bin;sudo wget https://raw.githubusercontent.com/superDuperCyberTechno/jot/master/jot && sudo chmod +x jot;cd -;
 ```
 
 This will download the file into the `/usr/local/bin` folder which should be a part of your PATH already, making it available everywhere in your terminal.
