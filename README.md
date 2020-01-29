@@ -1,5 +1,5 @@
 # jot
-### a CLI for daily journaling
+### a Linux CLI for daily journaling
 
 I stumbled upon [jrnl](https://github.com/maebert/jrnl) and thought it was a neat idea so I installed it and tried it. It didn't work very well so I quickly decided to slap something together myself. The result is _jot_.
 
